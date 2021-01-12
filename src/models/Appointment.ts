@@ -1,13 +1,15 @@
-class Appointment {
-	id: number;
-	provider: string;
-	date: Date;
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-	constructor({ provider, date }: Omit<Appointment, 'id'>) {
-		this.id = 0;
-		this.provider = provider;
-		this.date = date;
-	}
+@Entity('appointment')
+class Appointment {
+	@PrimaryGeneratedColumn('increment')
+	id: number;
+
+	@Column()
+	provider: string;
+
+	@Column('timestamp')
+	date: Date;
 }
 
 export default Appointment;

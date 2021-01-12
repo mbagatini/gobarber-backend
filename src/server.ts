@@ -1,6 +1,10 @@
+import 'reflect-metadata';
 import express from 'express';
 import routes from './routes';
 import appointmentsRouter from './routes/appointments.routes';
+
+// Conexão com o banco
+import './database';
 
 const app = express();
 
