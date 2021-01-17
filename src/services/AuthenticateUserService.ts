@@ -2,6 +2,7 @@ import { getRepository } from 'typeorm';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 
+import AppError from '../errors/AppError';
 import authConfig from '../config/auth';
 import User from '../models/User';
 
@@ -23,14 +24,14 @@ class AuthenticateUserService {
 		});
 
 		if (!user) {
-			throw new Error("Incorrect email or password combination");
+			throw new AppError("Incorrect email or password combination", 401);
 		}
 
 		// Senha criptografada
 		const matchedPassword = await compare(password, user.password);
 
 		if (!matchedPassword) {
-			throw new Error("Incorrect email or password combination");
+			throw new AppError("Incorrect email or password combination", 401);
 		}
 
 		// Gera o JWT
