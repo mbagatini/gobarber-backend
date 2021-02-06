@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
+import cors from 'cors';
 
 import AppError from './errors/AppError';
 import routes from './routes';
@@ -10,6 +11,9 @@ import uploadConfig from './config/upload';
 import './database';
 
 const app = express();
+
+// Controla quem pode acessar a API através do browser
+app.use(cors());
 
 app.use(express.json());
 
