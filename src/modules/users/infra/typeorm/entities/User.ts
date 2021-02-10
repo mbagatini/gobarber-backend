@@ -1,13 +1,16 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
-
-import Appointment from './Appointment';
+import {
+	Entity,
+	Column,
+	PrimaryGeneratedColumn,
+	CreateDateColumn,
+	UpdateDateColumn,
+	OneToMany,
+} from 'typeorm';
 
 @Entity('user')
 class User {
 	@PrimaryGeneratedColumn('increment')
 	id: number;
-
-	// @OneToMany(() => Appointment)
 
 	@Column()
 	name: string;

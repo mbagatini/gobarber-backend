@@ -2,9 +2,9 @@ import { getRepository } from 'typeorm';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 
-import AppError from '../errors/AppError';
-import authConfig from '../config/auth';
-import User from '../models/User';
+import AppError from '@shared/errors/AppError';
+import authConfig from '@config/auth';
+import User from '../infra/typeorm/entities/User';
 
 interface RequestDTO {
 	email: string;
@@ -16,22 +16,25 @@ interface ResponseDTO {
 }
 
 class AuthenticateUserService {
-	public async execute({ email, password }: RequestDTO): Promise<ResponseDTO> {
+	public async execute({
+		email,
+		password,
+	}: RequestDTO): Promise<ResponseDTO> {
 		const userRepository = getRepository(User);
 
 		const user = await userRepository.findOne({
-			where: { email }
+			where: { email },
 		});
 
 		if (!user) {
-			throw new AppError("Incorrect email or password combination", 401);
+			throw new AppError('Incorrect email or password combination', 401);
 		}
 
 		// Senha criptografada
 		const matchedPassword = await compare(password, user.password);
 
 		if (!matchedPassword) {
-			throw new AppError("Incorrect email or password combination", 401);
+			throw new AppError('Incorrect email or password combination', 401);
 		}
 
 		// Gera o JWT
