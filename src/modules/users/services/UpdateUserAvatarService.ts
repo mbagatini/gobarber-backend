@@ -1,5 +1,6 @@
 import path from 'path';
 import fs from 'fs';
+import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 import uploadConfig from '@config/upload';
@@ -11,9 +12,13 @@ interface RequestDTO {
 	avatarFilename: string;
 }
 
+@injectable()
 class UpdateUserAvatarService {
 	// Ao colocar o private, a variável privada é criada e setada automaticamente
-	constructor(private usersRepository: IUsersRepository) {}
+	constructor(
+		@inject('UsersRepository')
+		private usersRepository: IUsersRepository,
+	) {}
 
 	public async execute({
 		user_id,

@@ -1,5 +1,6 @@
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
+import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 import authConfig from '@config/auth';
@@ -15,9 +16,13 @@ interface ResponseDTO {
 	token: string;
 }
 
+@injectable()
 class AuthenticateUserService {
 	// Ao colocar o private, a variável privada é criada e setada automaticamente
-	constructor(private usersRepository: IUsersRepository) {}
+	constructor(
+		@inject('UsersRepository')
+		private usersRepository: IUsersRepository,
+	) {}
 
 	public async execute({
 		email,

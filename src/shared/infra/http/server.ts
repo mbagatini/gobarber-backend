@@ -10,6 +10,9 @@ import routes from './routes';
 // Conexão com o banco
 import '@shared/infra/typeorm';
 
+// Injeção de dependências
+import '@shared/container';
+
 const app = express();
 
 // Controla quem pode acessar a API através do browser
