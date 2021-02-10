@@ -1,28 +1,25 @@
-import { getRepository } from 'typeorm';
 import path from 'path';
 import fs from 'fs';
 
 import AppError from '@shared/errors/AppError';
 import uploadConfig from '@config/upload';
 import User from '../infra/typeorm/entities/User';
+import IUsersRepository from '../repositories/IUsersRepository';
 
 interface RequestDTO {
-	user_id: string;
+	user_id: number;
 	avatarFilename: string;
 }
 
 class UpdateUserAvatarService {
+	// Ao colocar o private, a variável privada é criada e setada automaticamente
+	constructor(private usersRepository: IUsersRepository) {}
+
 	public async execute({
 		user_id,
 		avatarFilename,
 	}: RequestDTO): Promise<User> {
-		const userRepository = getRepository(User);
-
-		const user = await userRepository.findOne({
-			where: {
-				id: user_id,
-			},
-		});
+		const user = await this.usersRepository.findById(user_id);
 
 		if (!user) {
 			throw new AppError('User not authenticated', 401);
@@ -46,7 +43,7 @@ class UpdateUserAvatarService {
 		// Grava o novo avatar
 		user.avatar = avatarFilename;
 
-		await userRepository.save(user);
+		await this.usersRepository.save(user);
 
 		return user;
 	}
